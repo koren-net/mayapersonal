@@ -1,31 +1,24 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpLeft, Check, Gauge, Infinity as InfinityIcon, MessageCircle, Plus, Rocket, Wrench } from "lucide-react";
+import { Check, Infinity as InfinityIcon, Plus } from "lucide-react";
 import { useState } from "react";
 import { PillLink } from "@/components/ui/PillLink";
 import { SectionLabel, WhatsAppIcon } from "@/components/ui/primitives";
 import { MaskLines, Reveal } from "@/components/ui/Reveal";
 import { retainer, tracks } from "@/lib/content";
-import { websites } from "@/lib/pages";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 import { whatsappHref } from "@/lib/site";
 
-const perkIcons = {
-  wrench: Wrench,
-  gauge: Gauge,
-  message: MessageCircle,
-  rocket: Rocket,
-} as const;
-
 export function Tracks() {
-  const [open, setOpen] = useState<string | null>(tracks[0].id);
+  // All tracks start closed on the shortened home page; one tap opens a track.
+  const [open, setOpen] = useState<string | null>(null);
 
   return (
     <section id="tracks" className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-36">
       <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-7">
-          <SectionLabel index="04">מסלולים</SectionLabel>
+          <SectionLabel index="05">מסלולים</SectionLabel>
           <h2 className="mt-8 text-[clamp(2.3rem,4.85vw,4.5rem)] leading-[0.95] font-black tracking-[-0.04em]">
             <MaskLines
               lines={[
@@ -150,7 +143,7 @@ export function Tracks() {
             <InfinityIcon className="absolute inset-0 m-auto size-10 text-ink" strokeWidth={2.2} />
           </div>
 
-          <div className="flex flex-col gap-12 md:gap-16">
+          <div>
             <div className="pt-16 md:max-w-[58%] md:pt-0">
               <p className="inline-flex items-center gap-2 rounded-full bg-white/[0.07] px-3 py-1 text-xs font-semibold text-paper/80">
                 <span className="size-2 rounded-full bg-signal" />
@@ -168,57 +161,6 @@ export function Tracks() {
                   לדבר על שותפות צמיחה
                 </PillLink>
               </div>
-            </div>
-            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
-              {retainer.perks.map((p) => {
-                const Icon = perkIcons[p.icon];
-                return (
-                  <li
-                    key={p.label}
-                    className="flex flex-col gap-8 rounded-[1.4rem] border border-white/[0.08] bg-ink-2 p-5 transition-colors duration-500 hover:bg-ink-3"
-                  >
-                    <span className="grid size-10 place-items-center rounded-full bg-signal text-ink">
-                      <Icon className="size-[18px]" />
-                    </span>
-                    <span className="text-[15px] leading-snug font-semibold">{p.label}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      </Reveal>
-
-      {/* Websites & landing pages */}
-      <Reveal className="mt-4">
-        <div className="grid gap-10 rounded-[2.5rem] border border-ink/10 p-7 md:rounded-[3rem] md:p-14 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <p className="inline-flex items-center gap-2 rounded-full bg-ink/[0.06] px-3 py-1 text-xs font-semibold text-ink/75">
-              <span aria-hidden className="size-2 rounded-full bg-signal" />
-              {websites.name}
-            </p>
-            <h3 className="mt-6 text-5xl font-black tracking-[-0.04em] md:text-7xl">
-              {websites.title} <span className="font-serif font-normal">{websites.serif}</span>
-            </h3>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/70">{websites.short}</p>
-          </div>
-          <div className="flex flex-col gap-8 lg:col-span-5">
-            <ul className="border-b border-ink/15">
-              {websites.offers.map((o) => (
-                <li key={o.id} className="flex items-baseline justify-between gap-4 border-t border-ink/15 py-3">
-                  <span className="text-lg font-bold">{o.name}</span>
-                  <span className="text-sm text-ink/70">
-                    {websites.pricePrefix}
-                    <span className="text-xl font-black text-ink">{o.price}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <p className="-mt-5 text-sm text-ink/70">{websites.vatNote}</p>
-            <div>
-              <PillLink href={websites.href} icon={<ArrowUpLeft className="size-5" />}>
-                כל הפרטים על אתרים
-              </PillLink>
             </div>
           </div>
         </div>

@@ -1,11 +1,11 @@
 import { FinalCta } from "@/components/sections/FinalCta";
 import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
+import { HowToStart } from "@/components/sections/HowToStart";
 import { Manifesto } from "@/components/sections/Manifesto";
-import { Marquee } from "@/components/sections/Marquee";
-import { Process } from "@/components/sections/Process";
 import { Tracks } from "@/components/sections/Tracks";
 import { Transformation } from "@/components/sections/Transformation";
+import { WebsitesTeaser } from "@/components/sections/WebsitesTeaser";
 import { site } from "@/lib/site";
 
 const jsonLd = {
@@ -26,11 +26,13 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* Shortened home (Maya, 2026-11-07). Marquee and the 5-step Process
+          section are kept in components/sections for later use. */}
       <Hero />
-      <Marquee />
       <Manifesto />
       <Transformation />
-      <Process />
+      <WebsitesTeaser />
+      <HowToStart />
       <Tracks />
       <Faq />
       <FinalCta />

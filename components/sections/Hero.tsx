@@ -25,7 +25,7 @@ export function Hero() {
                 <span className="absolute size-2 animate-ping rounded-full bg-signal/70 motion-reduce:animate-none" />
                 <span className="size-2 rounded-full bg-signal" />
               </span>
-              תשתיות תפעול · אוטומציות · מערכות לעסקים בצמיחה
+              אתרים · תשתיות תפעול · אוטומציות לעסקים בצמיחה
             </p>
           </Reveal>
 

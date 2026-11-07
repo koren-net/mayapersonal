@@ -16,7 +16,7 @@ export function Faq() {
     <section id="faq" className="mx-auto max-w-7xl px-5 pt-8 pb-24 md:px-8 md:pb-36">
       <div className="grid gap-12 lg:grid-cols-12">
         <div className="self-start lg:sticky lg:top-28 lg:col-span-4">
-          <SectionLabel index="05">שאלות</SectionLabel>
+          <SectionLabel index="06">שאלות</SectionLabel>
           <h2 className="mt-8 text-[clamp(2rem,3.45vw,2.9rem)] leading-[0.98] font-black tracking-[-0.04em]">
             <MaskLines
               lines={[

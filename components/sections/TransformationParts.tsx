@@ -5,7 +5,7 @@ import { ArrowLeft, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useStillness } from "@/components/providers/Providers";
 import { Tag } from "@/components/ui/primitives";
-import { chaosNotes, flowSteps, transformations } from "@/lib/content";
+import { chaosNotes, flowSteps, homeTransformations } from "@/lib/content";
 import { colors, rgba } from "@/lib/colors";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 
@@ -167,7 +167,7 @@ export function TransformRows() {
         </span>
       </div>
       <ol>
-        {transformations.map((row, i) => (
+        {homeTransformations.map((row, i) => (
           <motion.li
             key={row.pain}
             initial="hidden"

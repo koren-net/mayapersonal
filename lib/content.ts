@@ -12,26 +12,18 @@ const [landingOffer, siteOffer] = websites.offers;
 
 export type FeedItem = { text: string; source: string };
 
+/**
+ * The hero board shows situations, not metrics: no hours, percentages or
+ * response times that would read as promised results (Maya, 2026-11-07).
+ */
 export type DashboardState = {
   status: string;
-  hours: number;
-  hoursDelta: string;
-  bars: number[];
-  response: { value: number; unit: string; note: string };
-  load: number;
-  loadNote: string;
   feed: FeedItem[];
 };
 
 export const dashboard: Record<"before" | "after", DashboardState> = {
   before: {
     status: "מצב: כיבוי שריפות",
-    hours: 32,
-    hoursDelta: "עולה כל חודש",
-    bars: [62, 80, 55, 92, 74, 100, 70, 88, 60, 84, 95, 78],
-    response: { value: 9, unit: "שע׳", note: "לידים מתקררים" },
-    load: 92,
-    loadNote: "כל דבר עובר דרככם",
     feed: [
       { text: "7 הודעות ממתינות לתשובה", source: "WhatsApp" },
       { text: "הצעת מחיר תקועה כבר 3 ימים", source: "Email" },
@@ -43,12 +35,6 @@ export const dashboard: Record<"before" | "after", DashboardState> = {
   },
   after: {
     status: "מצב: העסק רץ",
-    hours: 6,
-    hoursDelta: "−81%",
-    bars: [24, 22, 20, 21, 18, 19, 16, 18, 15, 16, 15, 14],
-    response: { value: 4, unit: "דק׳", note: "מענה אוטומטי" },
-    load: 24,
-    loadNote: "רק איפה שצריך אתכם",
     feed: [
       { text: "ליד חדש נקלט ושובץ לנציג", source: "CRM" },
       { text: "הצעת מחיר נשלחה ונחתמה", source: "Docs" },
@@ -145,6 +131,9 @@ export const transformations: { pain: string; after: string }[] = [
     after: "צמיחה שלא דורשת עוד מכם — רק עוד מהמערכת.",
   },
 ];
+
+/** The three pains shown on the (shortened) home page. The full list stays above. */
+export const homeTransformations = [0, 1, 3].map((i) => transformations[i]);
 
 /* ------------------------------------------------------------------ */
 /* Process                                                             */

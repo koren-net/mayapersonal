@@ -7,21 +7,19 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { Check, Clock, Flame, TrendingUp, TriangleAlert, Zap } from "lucide-react";
+import { Check, Flame, TriangleAlert, Zap } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { useStillness } from "@/components/providers/Providers";
-import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { dashboard } from "@/lib/content";
-import { colors, rgba } from "@/lib/colors";
+import { colors } from "@/lib/colors";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 
 type Mode = "before" | "after";
 
 const SIGNAL = colors.signal;
 const SAFFRON = colors.saffron;
-const RADIUS = 30;
-const CIRC = 2 * Math.PI * RADIUS;
 const FEED_ROW_REM = 2.55; // row pitch; rows are h-11 (2.2rem)
+const FEED_ROWS = 5; // visible rows in the activity feed
 
 function Cell({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
@@ -61,7 +59,7 @@ export function HeroDashboard() {
   const feed = useMemo(() => {
     const items = d.feed;
     const start = tick % items.length;
-    return [2, 1, 0].map((o) => items[(start + o) % items.length]);
+    return Array.from({ length: FEED_ROWS }, (_, i) => items[(start + FEED_ROWS - 1 - i) % items.length]);
   }, [d, tick]);
 
   // Subtle 3D tilt that follows the pointer.
@@ -152,98 +150,9 @@ export function HeroDashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          {/* Manual hours */}
-          <Cell className="col-span-2">
-            <div className="flex items-center justify-between">
-              <p className="flex items-center gap-2 text-xs text-paper/55">
-                <Clock className="size-3.5" />
-                שעות עבודה ידנית בשבוע
-              </p>
-              <motion.span
-                animate={{ backgroundColor: isAfter ? rgba(colors.signal, 0.14) : rgba(colors.saffron, 0.14), color: accent }}
-                className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[13px] font-bold"
-              >
-                {!isAfter && <TrendingUp className="size-3" />}
-                <span dir="ltr">{d.hoursDelta}</span>
-              </motion.span>
-            </div>
-            <div className="mt-3 flex items-end justify-between gap-6">
-              <p className="flex items-baseline gap-1.5">
-                <AnimatedNumber
-                  value={d.hours}
-                  className="text-6xl leading-none font-black tracking-tight tabular-nums"
-                />
-                <span className="text-lg text-paper/60">ש׳</span>
-              </p>
-              <div className="flex h-16 flex-1 items-end gap-1" aria-hidden>
-                {d.bars.map((h, i) => (
-                  <motion.span
-                    key={i}
-                    className="flex-1 rounded-full"
-                    initial={false}
-                    animate={{ height: `${h}%`, backgroundColor: accent, opacity: isAfter ? 1 : 0.85 }}
-                    transition={{ type: "spring", stiffness: 110, damping: 15, delay: i * 0.035 }}
-                  />
-                ))}
-              </div>
-            </div>
-          </Cell>
-
-          {/* Response time */}
+        <div>
+          {/* Activity feed — situations, not metrics */}
           <Cell>
-            <p className="text-xs text-paper/55">זמן תגובה לליד</p>
-            <p className="mt-3 flex items-baseline gap-1.5">
-              <AnimatedNumber value={d.response.value} className="text-4xl font-black tabular-nums" />
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={d.response.unit}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  className="text-base text-paper/60"
-                >
-                  {d.response.unit}
-                </motion.span>
-              </AnimatePresence>
-            </p>
-            <motion.p animate={{ color: accent }} className="mt-3 text-[13px] font-semibold">
-              {d.response.note}
-            </motion.p>
-          </Cell>
-
-          {/* Owner load gauge */}
-          <Cell className="flex items-center gap-3">
-            <div className="relative size-[4.25rem] shrink-0">
-              <svg viewBox="0 0 76 76" className="size-full -rotate-90" aria-hidden>
-                <circle cx="38" cy="38" r={RADIUS} fill="none" strokeWidth="7" className="stroke-white/10" />
-                <motion.circle
-                  cx="38"
-                  cy="38"
-                  r={RADIUS}
-                  fill="none"
-                  strokeWidth="7"
-                  strokeLinecap="round"
-                  strokeDasharray={CIRC}
-                  initial={false}
-                  animate={{ strokeDashoffset: CIRC * (1 - d.load / 100), stroke: accent }}
-                  transition={{ duration: 1.2, ease: EASE_OUT_EXPO }}
-                />
-              </svg>
-              <p className="absolute inset-0 grid place-items-center text-sm font-black tabular-nums">
-                <span dir="ltr">
-                  <AnimatedNumber value={d.load} />%
-                </span>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs leading-snug text-paper/55">המעורבות שלכם בתפעול</p>
-              <p className="mt-1.5 text-[13px] leading-snug font-semibold text-paper/85">{d.loadNote}</p>
-            </div>
-          </Cell>
-
-          {/* Activity feed */}
-          <Cell className="col-span-2">
             <div className="flex items-center justify-between">
               <p className="text-xs text-paper/55">פעילות אחרונה</p>
               <span className="flex items-center gap-1.5 font-mono text-[12.5px] tracking-widest text-paper/60">
@@ -256,14 +165,17 @@ export function HeroDashboard() {
             </div>
             {/* Rows are positioned explicitly (no layout measurement), so the
                 rotation stays stable however often it ticks. */}
-            <ul className="relative mt-3 h-[7.35rem] overflow-hidden">
+            <ul
+              className="relative mt-3 overflow-hidden"
+              style={{ height: `${FEED_ROWS * FEED_ROW_REM - 0.35}rem` }}
+            >
               <AnimatePresence initial={false}>
                 {feed.map((item, idx) => (
                   <motion.li
                     key={`${mode}-${item.text}`}
                     initial={{ opacity: 0, y: `${-FEED_ROW_REM}rem` }}
                     animate={{ opacity: 1, y: `${idx * FEED_ROW_REM}rem` }}
-                    exit={{ opacity: 0, y: `${3 * FEED_ROW_REM}rem` }}
+                    exit={{ opacity: 0, y: `${FEED_ROWS * FEED_ROW_REM}rem` }}
                     transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
                     className="absolute inset-x-0 top-0 flex h-11 items-center gap-3 rounded-xl bg-white/[0.04] px-3 text-[14px]"
                   >
@@ -288,7 +200,7 @@ export function HeroDashboard() {
         </div>
       </motion.div>
 
-      <p className="mt-4 text-xs text-ink/65">* נתוני המחשה לתרחיש טיפוסי של עסק בצמיחה</p>
+      <p className="mt-4 text-xs text-ink/65">* דוגמה להמחשה</p>
     </motion.div>
   );
 }

@@ -37,7 +37,7 @@ export const site = {
 export const nav = [
   { href: "/services", label: "שירותים" },
   { href: "/services/websites", label: "אתרים" },
-  { href: "/#method", label: "השיטה" },
+  { href: "/#method", label: "איך מתחילים" },
   { href: "/about", label: "אודות" },
   { href: "/#faq", label: "שאלות" },
   { href: "/contact", label: "יצירת קשר" },

@@ -23,7 +23,7 @@ export function FinalCta() {
         </svg>
 
         <div className="mx-auto max-w-7xl">
-          <SectionLabel index="06" tone="accent">
+          <SectionLabel index="07" tone="accent">
             הצעד הראשון
           </SectionLabel>
           <h2 className="mt-8 text-[clamp(3rem,9.75vw,9.4rem)] leading-[0.88] font-black tracking-[-0.05em]">
