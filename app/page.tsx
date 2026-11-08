@@ -3,6 +3,7 @@ import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
 import { HowToStart } from "@/components/sections/HowToStart";
 import { Manifesto } from "@/components/sections/Manifesto";
+import { Marquee } from "@/components/sections/Marquee";
 import { Tracks } from "@/components/sections/Tracks";
 import { Transformation } from "@/components/sections/Transformation";
 import { WebsitesTeaser } from "@/components/sections/WebsitesTeaser";
@@ -26,9 +27,10 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Shortened home (Maya, 2026-11-07). Marquee and the 5-step Process
-          section are kept in components/sections for later use. */}
+      {/* Shortened home (Maya, 2026-11-07). The marquee band came back at
+          Maya's request; the 5-step Process section is kept for later use. */}
       <Hero />
+      <Marquee />
       <Manifesto />
       <Transformation />
       <WebsitesTeaser />
